@@ -154,9 +154,24 @@ python-cloud-automation-toolkit/
 
 ---
 
+## Cost & Safety Notes
+
+This project is designed to run locally against existing GCP APIs. It does not deploy, create, or modify any cloud resources.
+
+- All four commands are **read-only** — list and get operations only
+- No infrastructure is provisioned (no Cloud Run, no Cloud Functions, no schedulers, no buckets, no databases)
+- No persistent processes run in GCP as a result of using this toolkit
+- `cost-check` reads a local JSON file and makes no API calls at all
+- The three GCP-connected commands (`inventory`, `iam-review`, `stale-check`) use free or negligible-cost read APIs — running them daily costs fractions of a cent
+- Application Default Credentials are used for authentication — the toolkit requires an existing GCP project but does not create one
+
+**This project is safe to keep connected to a GCP project for portfolio purposes without incurring meaningful cost.**
+
+---
+
 ## Operational Notes
 
-- `cost-check` reads from `sample_data/billing_sample.json` — a real implementation would pull from BigQuery billing export or the Cloud Monitoring API
+- `cost-check` reads from `sample_data/billing_sample.json` — no GCP API call is made. Pulling live billing data (e.g. from BigQuery export) is listed as a future improvement only and is not required
 - `iam-review` uses Application Default Credentials via `google-api-python-client`
 - `inventory` and `stale-check` use the Compute Engine aggregated list API, which queries across all zones in one call
 - `Forbidden` errors (insufficient permissions) are caught and reported per command, not as a full crash
