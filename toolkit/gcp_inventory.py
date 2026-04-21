@@ -1,10 +1,8 @@
 import os
-from google.cloud import compute_v1
-from google.cloud import storage
-from google.api_core.exceptions import Forbidden
 
 
 def list_instances(project_id):
+    from google.cloud import compute_v1
     client = compute_v1.InstancesClient()
     request = compute_v1.AggregatedListInstancesRequest(project=project_id)
 
@@ -16,17 +14,16 @@ def list_instances(project_id):
                 instances.append({
                     "name": instance.name,
                     "zone": zone,
-                    "status": instance.status
+                    "status": instance.status,
                 })
 
     return instances
 
 
 def list_buckets(project_id):
+    from google.cloud import storage
     client = storage.Client(project=project_id)
-    buckets = client.list_buckets()
-
-    return [{"name": bucket.name} for bucket in buckets]
+    return [{"name": bucket.name} for bucket in client.list_buckets()]
 
 
 def format_inventory_output(instances, buckets):
@@ -35,40 +32,44 @@ def format_inventory_output(instances, buckets):
     lines.append("VM Instances:")
     if instances:
         for instance in instances:
-            lines.append(f"- {instance['name']} | {instance['zone']} | {instance['status']}")
+            lines.append(f"  - {instance['name']} | {instance['zone']} | {instance['status']}")
     else:
-        lines.append("- No instances found")
+        lines.append("  - No instances found")
 
     lines.append("")
     lines.append("Storage Buckets:")
     if buckets:
         for bucket in buckets:
-            lines.append(f"- {bucket['name']}")
+            lines.append(f"  - {bucket['name']}")
     else:
-        lines.append("- No buckets found")
+        lines.append("  - No buckets found")
 
     return "\n".join(lines)
 
 
 def run_inventory():
+    from google.api_core.exceptions import Forbidden
+
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
 
     if not project_id:
-        print("Please set GOOGLE_CLOUD_PROJECT")
+        print("Error: GOOGLE_CLOUD_PROJECT environment variable not set.")
         return
 
     print(f"\nInventory for project: {project_id}\n")
 
+    instances = []
+    buckets = []
+
     try:
         instances = list_instances(project_id)
-    except Forbidden as error:
-        print(f"VM Instances:\n- Could not list instances: {error}")
-        instances = []
+    except Forbidden:
+        print("Warning: insufficient permissions to list VM instances.\n")
 
     try:
         buckets = list_buckets(project_id)
-    except Forbidden as error:
-        print(f"\nStorage Buckets:\n- Could not list buckets: {error}")
-        buckets = []
+    except Forbidden:
+        print("Warning: insufficient permissions to list storage buckets.\n")
 
     print(format_inventory_output(instances, buckets))
+    print()
