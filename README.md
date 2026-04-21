@@ -216,3 +216,9 @@ python -m toolkit.cli inventory
 - CLI built with clean module separation — each command is independently runnable and testable
 - Pure logic functions tested without credentials — a practical pattern for any SDK-dependent project
 - Covers real operational concerns that appear in cloud ops, platform engineering, and support engineering roles: cost visibility, access control, and resource hygiene
+
+---
+
+## Cost & Safety Notes
+This project is designed to run locally and only performs read-only API calls.
+It does not create or deploy cloud infrastructure.
