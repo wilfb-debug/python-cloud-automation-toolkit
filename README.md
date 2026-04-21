@@ -119,7 +119,7 @@ tests/test_stale_check.py::test_stale_output_empty                       PASSED
 
 ## Tech Stack
 
-| | |
+| Tool | Purpose |
 |---|---|
 | Python 3 | Core language |
 | argparse | CLI routing |
@@ -166,7 +166,7 @@ python-cloud-automation-toolkit/
 ## Getting Started
 
 ```bash
-git clone https://github.com/wilfredballo/python-cloud-automation-toolkit.git
+git clone https://github.com/wilfb-debug/python-cloud-automation-toolkit.git
 cd python-cloud-automation-toolkit
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
