@@ -1,4 +1,5 @@
 # Python Cloud Automation Toolkit (GCP)
+## A Python CLI toolkit for automating cloud operations tasks on GCP, including cost monitoring, IAM risk detection, and resource hygiene.
 
 [![Python Tests](https://github.com/wilfb-debug/python-cloud-automation-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/wilfb-debug/python-cloud-automation-toolkit/actions/workflows/ci.yml)
 
