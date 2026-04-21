@@ -94,6 +94,14 @@ A clean project with no VMs or buckets. The tool handles this gracefully rather 
 
 ---
 
+### stale-check — no stale resources found
+
+Connected to a live GCP project. No terminated VMs found — the command exits cleanly with a clear result.
+
+![stale-check working](docs/evidence/stale-check-working.png)
+
+---
+
 ## Tests
 
 All 8 tests pass without GCP credentials. Business logic is decoupled from API calls so the test suite runs in under a second.
